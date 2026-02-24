@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_7.2.xsd">
+
+    <module name="erp" package="com.axelor.apps.erp.db"/>
+    <entity name="Building">
+        <string name="uuid" unique="true" index="true" nullable="false"/>
+        <string name="name" title="Name of the RC" required="true"/>
+        <string name="address" title="Address"/>
+        <decimal name="latitude" title="Latitude"  default="42.823581"/>
+        <decimal name="longitude" title="Longitude" default="74.550867"/>
+        <datetime name="timezone" title="Time Zone" tz="true"/>
+
+        <one-to-many name="entrance" title="Entrance" ref="com.axelor.apps.erp.db.Entrance"
+                     mappedBy="building"/>
+        <one-to-many name="device" title="Device" ref="com.axelor.apps.erp.db.Device"
+                     mappedBy="building"/>
+       <one-to-many name="geoResult" ref="com.axelor.apps.erp.db.GeoResult" />
+
+        <finder-method name="findByUUID" using="uuid"/>
+
+        <entity-listener class="com.axelor.entity.listener.BuildingListener"/>
+    </entity>
+</domain-models>

@@ -1,0 +1,6 @@
+[submodule "axelor-open-suite"]
+	path = modules/axelor-open-suite
+	url = git@github.com:axelor/axelor-open-suite.git
+[submodule "modules/axelor-open-suite"]
+	path = modules/axelor-open-suite
+	url = git@github.com:PetaByteLLC/ELAP-AOS.git

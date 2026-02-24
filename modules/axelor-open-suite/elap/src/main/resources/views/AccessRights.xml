@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
+
+    <grid title="Access Rights" name="access-rights-resident-grid"
+          model="com.axelor.apps.erp.db.AccessRights">
+        <field name="permissionName" title="Permission Name"/>
+        <field name="permissionType" title="Permission Type"/>
+    </grid>
+
+    <form title="Access Rights" name="access-rights-resident-form"
+          model="com.axelor.apps.erp.db.AccessRights">
+        <panel>
+            <field name="permissionName" title="Permission Name" required="true"/>
+            <field name="permissionType" title="Permission Type" selection="permission.type.select"
+                   default="custom_access"/>
+        </panel>
+    </form>
+</object-views>

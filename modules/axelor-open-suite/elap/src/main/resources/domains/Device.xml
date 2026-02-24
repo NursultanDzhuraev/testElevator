@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_7.2.xsd">
+
+    <module name="erp" package="com.axelor.apps.erp.db"/>
+
+    <entity name="Device">
+        <!-- Уникальный ID устройства в системе. -->
+        <string name="uuid" unique="true" index="true" nullable="false"/>
+        <string name="name" title="Name" nullable="false"/>
+        <!-- IPv4/IPv6 адрес устройства в сети. -->
+        <string name="ip" title="Ip address" nullable="false"/>
+        <!-- Логин для доступа к устройству. -->
+        <string name="login" title="Login" nullable="false"/>
+        <!-- Пароль устройства. -->
+        <string name="password" title="Password" nullable="false"/>
+        <string name="deviceType" title="Device Type" selection="devices.type.select"
+                default="lift"/>
+        <string name="host" title="Host"/>
+        <string name="protocol" title="Protocol"/>
+        <integer name="port" title="Port" default="80"/>
+        <string name="model" title="Model"/>
+        <string name="firmware" title="FirmWare"/>
+        <string name="serialNumber" title="Serial Number"/>
+        <boolean name="isActive" title="Is Active" default="true"/>
+        <many-to-one name="entrance" ref="com.axelor.apps.erp.db.Entrance"/>
+        <many-to-one name="building" ref="com.axelor.apps.erp.db.Building"/>
+
+        <finder-method name="findByUUID" using="uuid"/>
+
+        <entity-listener class="com.axelor.entity.listener.DeviceListener"/>
+    </entity>
+</domain-models>

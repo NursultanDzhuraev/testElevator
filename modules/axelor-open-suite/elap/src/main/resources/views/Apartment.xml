@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
+
+    <grid name="apartment-grid" title="Apartment" model="com.axelor.apps.erp.db.Apartment">
+        <field name="apartmentNumber" title="Number Apartment"/>
+        <field name="debtStatus"/>
+        <field name="entrance" target-name="entranceNumber"/>
+        <field name="entrance.building" target-name="name" title="Name of the RC"/>
+        <field name="partner" title="Residents"/>
+    </grid>
+
+    <grid name="apartment-resident-grid" title="Apartment"
+          model="com.axelor.apps.erp.db.Apartment">
+        <field name="apartmentNumber" title="Number Apartment"/>
+        <field name="debtStatus"/>
+        <field name="entrance.entranceNumber" target-name="entranceNumber"/>
+        <field name="entrance.building" target-name="name" title="Building"/>
+    </grid>
+
+    <grid title="Apartments" name="apartment-grid-with-entrance-and-building" model="com.axelor.apps.erp.db.Apartment">
+        <field name="apartmentNumber" title="Apartment"/>
+        <field name="entrance.entranceNumber" title="Entrance"/>
+        <field name="entrance.building.name" title="Name of the RC"/>
+    </grid>
+
+    <grid name="apartment-entrance-grid" title="Apartment"
+          model="com.axelor.apps.erp.db.Apartment">
+        <field name="apartmentNumber" title="Number Apartment"/>
+        <field name="debtStatus"/>
+    </grid>
+
+    <form name="apartment-entrance-form" title="Apartment"
+          model="com.axelor.apps.erp.db.Apartment">
+        <panel colSpan="6">
+            <field name="apartmentNumber" title="Number Apartment"/>
+            <field name="debtStatus"/>
+        </panel>
+    </form>
+
+    <form name="apartment-form" title="Apartment" model="com.axelor.apps.erp.db.Apartment"
+          onSave="apartment-debt-status-action">
+        <panel colSpan="6">
+            <field name="apartmentNumber" title="Number Apartment"/>
+            <field name="debtStatus"/>
+            <field name="entrance" />
+        </panel>
+        <panel-related field="partner" title="Residents" readonly="true"
+                       grid-view="partner-for-apartment-grid"
+                       showIf="partner &amp;&amp; partner.length &gt; 0"/>
+    </form>
+
+    <action-method name="apartment-debt-status-action">
+        <call class="com.axelor.web.PartnerController" method="changeDebtStatus"/>
+    </action-method>
+
+</object-views>

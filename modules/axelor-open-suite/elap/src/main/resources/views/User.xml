@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.2.xsd">
+
+    <grid name="erp-stat-user-grid" title="Users list" orderBy="roles.name" model="com.axelor.auth.db.User">
+        <field name="code" title="Login"/>
+        <field name="name" title="User name"/>
+        <field name="roles.name" title="Role name"/>
+    </grid>
+
+    <form name="erp-stat-user-form-for-admin" title="User" model="com.axelor.auth.db.User" onNew="on-new-create-user">
+        <panel name="mainPanel" title="Main Information" colSpan="12">
+            <field name="name" colSpan="6" title="User name" required="true"/>
+            <field name="code" colSpan="6" title="Login" required="true"/>
+            <field name="email" widget="Email" colSpan="6" />
+            <field name="roles" title="Role" widget="TagSelect" onChange="action-attrs-check-role" colSpan="6"
+                   canSelect="true" canNew="false" canEdit="false"
+                   required="false"/>
+        </panel>
+        <panel name="passwordPanel" title="Password Management" colSpan="12"
+               showIf="$passwordIsAvailable">
+            <field name="change" title="Change password?" widget="boolean" showIf="id"/>
+            <panel name="changePasswordFields" showIf="change" colSpan="12">
+                <field name="oldPassword" title="Old Password" widget="password" requiredIf="change || !id"/>
+                <field name="newPassword" title="New Password" widget="password" requiredIf="change || !id"/>
+                <field name="chkPassword" title="Confirm Password" widget="password" requiredIf="change || !id"
+                       validIf="chkPassword === newPassword"/>
+            </panel>
+        </panel>
+        <panel name="allPasswordsPanel" showIf="!id" colSpan="12" itemSpan="12">
+            <field name="oldPassword" title="Your password" placeholder="your password" widget="password"
+                   requiredIf="change || !id"/>
+            <panel name="passwordPanel" itemSpan="12">
+                <field name="newPassword" title="New password" placeholder="new password" widget="password"
+                       onChange="action-user-validate-password" requiredIf="change || !id"
+                       validIf="(!change &amp;&amp; id) || newPassword.length >= 4"/>
+                <field name="chkPassword" title="Confirm password" placeholder="confirm password" widget="password"
+                       requiredIf="change || !id" validIf="chkPassword === newPassword"/>
+            </panel>
+        </panel>
+        <panel name="authPanel" title="Status and Access" colSpan="12" showIf="id &amp;&amp; $isAdmin">
+            <field name="blocked" title="Blocked"/>
+            <field name="activateOn" title="Activate On"/>
+            <field name="expiresOn" title="Expires On"/>
+            <field name="passwordUpdatedOn" readonly="true" title="Last password update date"/>
+        </panel>
+        <panel colSpan="12" hideIf="id">
+            <spacer colSpan="3"/>
+            <button name="save" title="Save"
+                    onClick="on-new-create-user,save"/>
+            <spacer colSpan="3"/>
+        </panel>
+    </form>
+
+    <action-attrs name="on-new-create-user">
+        <attribute for="blocked" name="value" expr="eval:false"/>
+        <attribute for="stepStatusSelect" name="value" expr="eval:5"/>
+    </action-attrs>
+
+    <form name="user-preferences-form" id="erp-user-preferences-form" title="My Profile"
+          model="com.axelor.auth.db.User" onSave="com.axelor.apps.base.web.UserController:validate"
+          onLoad="action-user-attrs" onNew="on-new-create-user">
+        <panel title="User preferences" itemSpan="12" >
+            <field name="localization" title="Localization" grid-view="localization-grid"
+                   form-view="localization-form" onChange="action-base-user-record-change-language"/>
+            <field name="change" title="Change password?" widget="inline-checkbox"/>
+            <field name="email" showIf="!$readonly() || ($readonly() &amp;&amp; email != null)"/>
+            <field name="theme" widget="theme-select"/>
+            <field name="name" title="Name"/>
+            <panel showIf="change" itemSpan="12">
+                <field name="oldPassword" title="Current password" placeholder="current password"
+                       help="Current password of the user" widget="password" requiredIf="change"/>
+                <field name="newPassword" title="New password" placeholder="new password"
+                       help="New password of the user" widget="password" requiredIf="change"
+                       validIf="!change || newPassword.length >= 4"
+                       onChange="action-condition-user-password"/>
+                <field name="chkPassword" title="Confirm new password" placeholder="confirm new password"
+                       help="Confirm new password of the user (must be identical to the new password)" widget="password"
+                       requiredIf="change" validIf="chkPassword === newPassword"/>
+                <help>user.password.pattern-title</help>
+            </panel>
+        </panel>
+    </form>
+
+
+</object-views>

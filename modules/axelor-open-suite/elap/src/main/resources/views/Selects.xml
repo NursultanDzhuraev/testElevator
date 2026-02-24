@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_6.1.xsd">
+
+  <selection name="partner.type.select">
+    <option value="resident">Resident</option>
+    <option value="employee">Employee</option>
+    <option value="guest">Guest</option>
+    <option value="courier">Courier</option>
+    <option value="service">Service</option>
+    <option value="security">Security</option>
+    <option value="admin">Admin</option>
+  </selection>
+  <selection name="permission.type.select">
+    <option value="custom_access">Custom Access</option>
+    <option value="full_access">Full Access</option>
+    <option value="empty_access">Empty Access</option>
+  </selection>
+  <selection name="devices.type.select">
+    <option value="lift">lift</option>
+    <option value="door">door</option>
+    <option value="gate">gate</option>
+    <option value="turnstile">turnstile</option>
+    <option value="intercom">intercom</option>
+    <option value="barrier">barrier</option>
+    <option value="parking">parking</option>
+  </selection>
+
+  <selection name="patner.status.select">
+    <option value="active">active</option>
+    <option value="inactive">inactive</option>
+    <option value="expired">expired</option>
+  </selection>
+
+</object-views>

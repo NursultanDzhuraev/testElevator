@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
+
+    <grid name="entrance-grid" title="Entrance" model="com.axelor.apps.erp.db.Entrance" >
+        <field name="entranceNumber"/>
+        <field name="building" target-name="name" title="Name of the RC"/>
+        <field name="apartment" title="Number of apartments"/>
+    </grid>
+
+    <grid name="entrance-apartment-grid" title="Entrance" model="com.axelor.apps.erp.db.Entrance">
+        <field name="entranceNumber"/>
+        <field name="building" target-name="name"/>
+    </grid>
+
+    <grid name="entrance-building-grid" title="Entrance" model="com.axelor.apps.erp.db.Entrance">
+        <field name="entranceNumber"/>
+        <field name="apartment" target-name="apartmentNumber"/>
+    </grid>
+
+    <form name="entrance-form" title="Entrance" model="com.axelor.apps.erp.db.Entrance" onLoad="action-entrance-number-of-debtors">
+        <panel colSpan="6">
+            <field name="entranceNumber"/>
+            <field name="building" canEdit="false" canNew="false" canRemove="false" required="true"/>
+            <field name="numberOfDebtors" title="Number of debtors" type="integer" showIf="id != null" readonly="true"/>
+        </panel>
+        <panel-related field="device" title="Device" readonly="true"
+                       showIf="device &amp;&amp; device.length &gt; 0">
+            <field name="name" title="Name"/>
+            <field name="ip" title="Ip address"/>
+            <field name="deviceType" title="Device Type"/>
+            <field name="isActive" title="Is Active"/>
+        </panel-related>
+    </form>
+
+    <form name="entrance-building-form" title="Entrance" model="com.axelor.apps.erp.db.Entrance">
+        <panel colSpan="6">
+            <field name="entranceNumber"/>
+        </panel>
+    </form>
+
+  <action-method name="action-entrance-number-of-debtors">
+      <call class="com.axelor.web.EntranceController" method="numberOfDebtors"/>
+  </action-method>
+
+</object-views>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
+    <grid title="Device" name="device-grid" model="com.axelor.apps.erp.db.Device">
+        <field name="name" title="Name"/>
+        <field name="ip" title="Ip address"/>
+        <field name="deviceType" title="Device Type"/>
+        <field name="isActive" title="Is Active"/>
+        <field name="entrance" target-name="entranceNumber"/>
+        <field name="entrance.building.name" title="Building Name"/>
+        <field name="partner"/>
+    </grid>
+
+    <grid title="Device" name="device-resident-grid" model="com.axelor.apps.erp.db.Device">
+        <field name="name" title="Name"/>
+        <field name="ip" title="Ip address"/>
+        <field name="deviceType" title="Device Type"/>
+        <field name="entrance.numberEntrance" title="Entrance"/>
+        <field name="isActive" title="Is Active"/>
+    </grid>
+
+    <form title="Device" name="device-form" model="com.axelor.apps.erp.db.Device">
+        <panel>
+            <field name="name" title="Name" required="true"/>
+            <field name="ip"
+                   title="Ip address"
+                   required="true"
+                   pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"/>
+            <field name="login" title="Login" required="true"/>
+            <field name="password" title="Password" required="true"/>
+            <field name="deviceType" title="Device Type" required="true"/>
+            <field name="host"/>
+            <field name="protocol"/>
+            <field name="port"/>
+            <field name="model"/>
+            <field name="firmware"/>
+            <field name="serialNumber"/>
+
+            <field name="building" title="Building" required="true"/>
+            <field name="entrance"
+                   target-name="entranceNumber"
+                   domain="self.building = :building"
+                   required="true"
+                   showIf="building"/>
+            <field name="isActive" title="Is Active"/>
+        </panel>
+    </form>
+
+</object-views>

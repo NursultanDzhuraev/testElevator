@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_7.2.xsd">
+
+    <module name="erp" package="com.axelor.apps.erp.db"/>
+
+    <entity name="Apartment">
+        <string name="apartmentNumber" title="Apartment Number" required="true"/>
+        <boolean name="debtStatus" title="Debt Status" default="false"/>
+        <many-to-one name="entrance" ref="com.axelor.apps.erp.db.Entrance" required="true"/>
+        <many-to-many name="partner" ref="com.axelor.apps.base.db.Partner" mappedBy="apartment"/>
+
+        <unique-constraint columns="entrance,apartmentNumber"/>
+
+        <finder-method name="findByUUID" using="uuid"/>
+
+    </entity>
+</domain-models>

@@ -1,0 +1,5 @@
+"name";"object";"canRead";"canWrite";"canCreate";"canRemove";"canExport";"condition";"conditionParams"
+
+"perm.erp.operator.partner";"com.axelor.apps.base.db.Partner";true;true;true;true;;;
+"perm.erp.operator.erp.base";"com.axelor.apps.erp.db.*";true;true;true;true;;;
+"perm.erp.bos.user";"com.axelor.apps.base.db.User";true;true;true;true;true;true;

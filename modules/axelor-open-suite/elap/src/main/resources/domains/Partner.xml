@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_7.2.xsd">
+
+    <module name="base" package="com.axelor.apps.base.db"/>
+
+    <entity name="Partner" sequential="true">
+        <string name="uuid" unique="true" index="true" nullable="false"/>
+        <string name="partnerType" title="Partner Type" selection="partner.type.select"
+                default="resident"/>
+        <string name="cardNumber" title="Card Number" unique="true"/>
+        <integer name="pinCode" title="Pin Code" nullable="false"/>
+        <string name="email" title="Email"/>
+        <string name="phone" title="Phone"/>
+        <string name="status" title="Status" selection="partner.status.select" default="active"/>
+        <datetime name="lastSynchronizedDate" title="Last Update Date" />
+        <many-to-many name="apartment" ref="com.axelor.apps.erp.db.Apartment"/>
+
+        <one-to-many name="accessCredentials"
+                     ref="com.axelor.apps.erp.db.AccessCredential" mappedBy="partner"
+                     title="Access Credentials"/>
+
+        <finder-method name="findByUUID" using="uuid"/>
+
+        <entity-listener class="com.axelor.entity.listener.PartnerListener"/>
+    </entity>
+</domain-models>

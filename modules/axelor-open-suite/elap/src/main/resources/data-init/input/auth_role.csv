@@ -1,0 +1,3 @@
+"importId";"name";"description";"permissions"
+44;"Operator";"Operator";"perm.erp.operator.erp.base|perm.erp.operator.partner|perm.auth.all|perm.base.all|perm.meta.all"
+67;"Bos";"Bos";"perm.erp.operator.erp.base|perm.erp.operator.partner|perm.erp.bos.user|perm.base.all|perm.auth.all|perm.meta.all|perm.mail.all|perm.dms.all|perm.team.all"
