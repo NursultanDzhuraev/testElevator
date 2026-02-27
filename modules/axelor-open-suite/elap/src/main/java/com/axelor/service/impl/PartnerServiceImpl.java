@@ -44,7 +44,7 @@ public class PartnerServiceImpl implements PartnerService {
     private final AcsUserProducer producer;
 
     @Inject
-    public PartnerServiceImpl(AccessRightsRepository repository, AccessCredentialRepository credentialRepository, PartnerMapper mapper, PartnerChangePermissionDto changeDebtStatusDto, ChangePermissionMapper changePermissionMapper, AcsUserProducer producer) {
+    public PartnerServiceImpl(AccessRightsRepository repository, AccessCredentialRepository credentialRepository, PartnerMapper mapper, ChangePermissionMapper changePermissionMapper, AcsUserProducer producer) {
         this.repository = repository;
         this.credentialRepository = credentialRepository;
         this.mapper = mapper;
@@ -64,49 +64,15 @@ public class PartnerServiceImpl implements PartnerService {
         if (partner.getUuid() == null) {
             partner.setUuid(UUID.randomUUID().toString().replace("-", ""));
         }
+
+        mergeAccessCredentialsFromApartments(partner);
+
         boolean isNew = partner.getId() == null;
         if (isNew) {
-            Set<Apartment> apartments = partner.getApartment();
-            List<AccessCredential> accessCredentials = partner.getAccessCredentials();
-            if (accessCredentials == null || accessCredentials.isEmpty()) {
-                accessCredentials = new ArrayList<>();
-            }
-            if (apartments != null && !apartments.isEmpty()) {
-                for (Apartment apartment : apartments) {
-                    Entrance entrance = apartment.getEntrance();
-                    List<Device> devices = entrance.getDevice();
-                    for (Device device : devices) {
-                        AccessCredential credential = new AccessCredential();
-                        credential.setDevice(device);
-                        credential.setAccessRights(findAccessRights());
-                        AccessCredential save = credentialRepository.save(credential);
-                        accessCredentials.add(save);
-                    }
-                }
-            }
-            partner.setAccessCredentials(accessCredentials);
             PartnerDtoRequest dto = mapper.toDto(partner);
             producer.sendUserCreate(dto);
             response.setValues(partner);
         } else {
-            Set<Apartment> apartments = partner.getApartment();
-            List<AccessCredential> accessCredentials = partner.getAccessCredentials();
-            if (accessCredentials == null || accessCredentials.isEmpty()) {
-                accessCredentials = new ArrayList<>();
-            }
-            if (apartments != null && !apartments.isEmpty()) {
-                for (Apartment apartment : apartments) {
-                    Entrance entrance = apartment.getEntrance();
-                    List<Device> devices = entrance.getDevice();
-                    for (Device device : devices) {
-                        AccessCredential credential = new AccessCredential();
-                        credential.setDevice(device);
-                        credential.setAccessRights(findAccessRights());
-                        AccessCredential save = credentialRepository.save(credential);
-                        accessCredentials.add(save);
-                    }
-                }
-            }
             PartnerDtoRequest dto = mapper.toDto(partner);
             producer.sendUserUpdate(partner.getUuid(), dto);
             response.setValues(partner);
@@ -114,6 +80,44 @@ public class PartnerServiceImpl implements PartnerService {
         }
 
 
+    }
+
+    private void mergeAccessCredentialsFromApartments(Partner partner) {
+        List<AccessCredential> accessCredentials = partner.getAccessCredentials();
+        if (accessCredentials == null) {
+            accessCredentials = new ArrayList<>();
+            partner.setAccessCredentials(accessCredentials);
+        }
+
+        Set<Long> linkedDeviceIds = accessCredentials.stream()
+                .map(AccessCredential::getDevice)
+                .filter(Objects::nonNull)
+                .map(Device::getId)
+                .filter(Objects::nonNull)
+                .collect(HashSet::new, Set::add, Set::addAll);
+
+        Set<Apartment> apartments = partner.getApartment();
+        if (apartments == null || apartments.isEmpty()) {
+            return;
+        }
+
+        AccessRights fullAccess = findAccessRights();
+        for (Apartment apartment : apartments) {
+            if (apartment == null || apartment.getEntrance() == null || apartment.getEntrance().getDevice() == null) {
+                continue;
+            }
+            for (Device device : apartment.getEntrance().getDevice()) {
+                if (device == null || device.getId() == null || linkedDeviceIds.contains(device.getId())) {
+                    continue;
+                }
+                AccessCredential credential = new AccessCredential();
+                credential.setDevice(device);
+                credential.setAccessRights(fullAccess);
+                AccessCredential savedCredential = credentialRepository.save(credential);
+                accessCredentials.add(savedCredential);
+                linkedDeviceIds.add(device.getId());
+            }
+        }
     }
 
     private AccessRights findAccessRights() {

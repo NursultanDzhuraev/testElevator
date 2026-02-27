@@ -28,6 +28,7 @@ public class ElapModule extends AxelorModule {
     bind(DeviceService.class).to(DeviceServiceImpl.class);
     bind(AccessRightsService.class).to(AccessRightsServiceImpl.class);
     bind(EntranceService.class).to(EntranceServiceImpl.class);
+    bind(DahuaAutoRegisterService.class).to(DahuaAutoRegisterServiceImpl.class);
     bind(AcsDeviceProducer.class).asEagerSingleton();
     bind(AcsLocationProducer.class).asEagerSingleton();
     bind(AcsUserProducer.class).asEagerSingleton();
