@@ -7,19 +7,28 @@
 
     <entity name="Partner" sequential="true">
         <string name="uuid" unique="true" index="true" nullable="false"/>
-        <string name="partnerType" title="Partner Type" selection="partner.type.select"
+        <string name="externalId" unique="true" index="true"/>
+        <string name="firstName" title="First Name"/>
+        <string name="lastName" title="Last Name"/>
+        <string name="partnerType" title="Person Type" selection="person.type.select"
                 default="resident"/>
         <string name="cardNumber" title="Card Number" unique="true"/>
         <integer name="pinCode" title="Pin Code" nullable="false"/>
         <string name="email" title="Email"/>
         <string name="phone" title="Phone"/>
         <string name="status" title="Status" selection="partner.status.select" default="active"/>
-        <datetime name="lastSynchronizedDate" title="Last Update Date" />
+        <datetime name="lastSynchronizedDate" title="Last Update Date"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
+
         <many-to-many name="apartment" ref="com.axelor.apps.erp.db.Apartment"/>
 
         <one-to-many name="accessCredentials"
                      ref="com.axelor.apps.erp.db.AccessCredential" mappedBy="partner"
-                     title="Access Credentials"/>
+                     title="Credentials"/>
+        <one-to-many name="scheduledAccess"
+                     ref="com.axelor.apps.erp.db.ScheduledAccess" mappedBy="partner"
+                     title="Scheduled access"/>
 
         <finder-method name="findByUUID" using="uuid"/>
 

@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -35,6 +36,14 @@ public class DeviceServiceImpl implements DeviceService {
     public void saveAndUpdateDevice(ActionRequest request, ActionResponse response) {
         try {
             Device device = request.getContext().asType(Device.class);
+            if (device.getUuid() == null || device.getUuid().isBlank()) {
+                device.setUuid(generatorId.generate("device"));
+            }
+            if (device.getExternalId() == null || device.getExternalId().isBlank()) {
+                device.setExternalId(device.getUuid());
+            }
+            device.setUpdatedAt(LocalDateTime.now());
+            device.setVersion(device.getVersion() == null ? 1 : device.getVersion() + 1);
 
             boolean isNew = (device.getId() == null);
 

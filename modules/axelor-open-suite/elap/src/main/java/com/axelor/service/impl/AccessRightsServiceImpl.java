@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -36,6 +37,14 @@ public class AccessRightsServiceImpl implements AccessRightsService {
     public void accessRightsSaveAndUpdate(ActionRequest request, ActionResponse response) {
         try {
             AccessRights accessRights = request.getContext().asType(AccessRights.class);
+            if (accessRights.getUuid() == null || accessRights.getUuid().isBlank()) {
+                accessRights.setUuid(generatorId.generate("credential"));
+            }
+            if (accessRights.getExternalId() == null || accessRights.getExternalId().isBlank()) {
+                accessRights.setExternalId(accessRights.getUuid());
+            }
+            accessRights.setUpdatedAt(LocalDateTime.now());
+            accessRights.setVersion(accessRights.getVersion() == null ? 1 : accessRights.getVersion() + 1);
             boolean isNew = (accessRights.getId() == null);
             if (isNew) {
                 AccessRightDtoRequest dto = mapper.toDto(accessRights);

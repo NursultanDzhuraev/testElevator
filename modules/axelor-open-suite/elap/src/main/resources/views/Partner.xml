@@ -3,105 +3,47 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
 
-    <grid name="partner-resident-grid" title="Partner" model="com.axelor.apps.base.db.Partner"
-          onDelete="action-partner-list-delete">
-        <field name="apartment" title="Apartment"/>
-        <field name="name" title="Full Name"/>
-        <field name="partnerType" title="Partner Type"/>
-        <field name="cardNumber" title="Card Number"/>
-    </grid>
-    <grid name="partner-for-apartment-grid" title="Partner" model="com.axelor.apps.base.db.Partner">
-        <field name="name" title="Full Name"/>
-        <field name="partnerType" title="Partner Type"/>
+    <grid name="partner-resident-grid" title="Persons" model="com.axelor.apps.base.db.Partner">
+        <field name="name" title="Full name"/>
+        <field name="firstName"/>
+        <field name="lastName"/>
+        <field name="externalId"/>
+        <field name="partnerType" title="Person type"/>
+        <field name="status"/>
     </grid>
 
-    <form name="partner-resident-form" title="Partner" model="com.axelor.apps.base.db.Partner"
-          onSave="action-partner-validate, action-partner-add-access-rights " >
-
+    <form name="partner-resident-form" title="Person" model="com.axelor.apps.base.db.Partner">
         <panel>
-            <panel colSpan="12">
-                <field name="picture" widget="Image" showTitle="false"/>
-                <field name="name" title="Full Name" required="true"/>
-                <field name="cardNumber" title="Card Number"/>
-                <field name="pinCode" title="Pin Code" required="true" widget="password"/>
-                <field name="partnerType" title="Partner Type" onChange="action-partner-type-change"/>
-            </panel>
-            <panel colSpan="12">
-                <field name="apartment" grid-view="apartment-grid-with-entrance-and-building" colSpan="12"
-                       type="many-to-many" canNew="false" required="true"/>
-            </panel>
+            <field name="name" title="Full name"/>
+            <field name="firstName"/>
+            <field name="lastName"/>
+            <field name="externalId"/>
+            <field name="partnerType"/>
+            <field name="status"/>
+            <field name="cardNumber"/>
+            <field name="pinCode"/>
+            <field name="email"/>
+            <field name="phone"/>
+            <field name="version"/>
+            <field name="updatedAt"/>
+            <button name="syncPartner" title="Sync person" onClick="action-partner-add-access-rights"/>
+            <button name="showSyncStatus" title="Show sync status" onClick="action-partner-method-show-sync-status"/>
         </panel>
-        <panel name="syncPanel" title="Synchronization Details" colSpan="12" showIf="id != null">
-            <button name="loadSyncBtn" title="Load Detailed Information"
-                    onClick="action-partner-method-show-sync-status"
-                    icon="fa-refresh"
-                    css="btn-primary"/>
-
-            <field name="$syncStatusHtml"
-                   showTitle="false"
-                   widget="html"
-                   colSpan="12"
-                   showIf="$showSyncStatus"
-                   readonly="true"
-                   lite="true"
-                   css="readonly-html-widget"/>
-        </panel>
+        <panel-related field="accessCredentials" title="Person zone access">
+            <field name="device"/>
+            <field name="accessZone"/>
+            <field name="accessRights"/>
+            <field name="validFrom"/>
+            <field name="validTo"/>
+        </panel-related>
     </form>
-
-
-
-    <grid name="apartment-selection-grid" title="Select Apartment"
-          model="com.axelor.apps.erp.db.Apartment">
-        <field name="apartmentNumber" title="Number"/>
-        <field name="entrance.entranceNumber" title="Entrance"/>
-        <field name="entrance.building.name" title="Building"/>
-        <field name="debtStatus" title="Debt Status"/>
-    </grid>
-
-    <grid name="entrance-selection-grid" title="Select Entrance"
-          model="com.axelor.apps.erp.db.Entrance">
-        <field name="entranceNumber" title="Entrance Number"/>
-        <field name="building.name" title="Building"/>
-        <field name="building.address" title="Address"/>
-    </grid>
-
-    <grid name="device-selection-grid" title="Select Device"
-          model="com.axelor.apps.erp.db.Device">
-        <field name="name" title="Name"/>
-        <field name="deviceType" title="Type"/>
-        <field name="ip" title="IP Address"/>
-        <field name="entrance.entranceNumber" title="Entrance"/>
-    </grid>
-
-    <grid name="access-right-selection-grid" title="Select Permission"
-          model="com.axelor.apps.erp.db.AccessRights">
-        <field name="permissionName" title="Permission Name"/>
-    </grid>
-
-    <form name="access-right-form" title="Access Right"
-          model="com.axelor.apps.erp.db.AccessRights">
-        <panel>
-            <field name="permissionName" title="Permission Name" required="true"/>
-        </panel>
-    </form>
-
-    <action-record name="action-partner-type-change"
-                   model="com.axelor.apps.base.db.Partner">
-        <field name="apartmentDevicePermissions" expr="eval: null"/>
-    </action-record>
-
-    <action-validate name="action-partner-validate">
-        <error message="Full Name is required" if="!name"/>
-        <error message="Pin Code is required" if="!pinCode"/>
-    </action-validate>
 
     <action-method name="action-partner-add-access-rights">
         <call class="com.axelor.web.PartnerController" method="partnerSaveDevice"/>
     </action-method>
 
     <action-method name="action-partner-method-show-sync-status">
-        <call class="com.axelor.web.PartnerController"
-              method="showSyncStatus"/>
+        <call class="com.axelor.web.PartnerController" method="showSyncStatus"/>
     </action-method>
 
 </object-views>

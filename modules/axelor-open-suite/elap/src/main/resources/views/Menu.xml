@@ -3,66 +3,45 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://axelor.com/xml/ns/object-views https://axelor.com/xml/ns/object-views_7.1.xsd">
 
-    <menuitem name="menu-for-management" title="Management RC" icon="fa fa-cogs"/>
+    <menuitem name="menu-for-management" title="Access Management" icon="fa fa-cogs"/>
 
-    <menuitem name="menu-for-bos" title="Administration" icon="wrench-adjustable-circle" icon-background="#2fa042"
-    groups="bosses,admins"/>
-
-    <!--building -->
-    <menuitem name="menu-for-builder" parent="menu-for-management" title="Building" icon="fa fa-building"
+    <menuitem name="menu-for-builder" parent="menu-for-management" title="Residential Complexes" icon="fa fa-building"
               action="action-building"/>
-    <action-view name="action-building" title="Building"
+    <action-view name="action-building" title="Residential Complexes"
                  model="com.axelor.apps.erp.db.Building">
         <view type="grid" name="building-grid"/>
         <view type="form" name="building-form"/>
     </action-view>
-    <!--Entrances -->
-    <menuitem name="menu-for-entrance" parent="menu-for-management" title="Entrances" icon="fa fa-sort"
+
+    <menuitem name="menu-for-entrance" parent="menu-for-management" title="Access Zones" icon="fa fa-sitemap"
               action="action-entrance"/>
-    <action-view name="action-entrance" title="Entrances"
+    <action-view name="action-entrance" title="Access Zones"
                  model="com.axelor.apps.erp.db.Entrance">
         <view type="grid" name="entrance-grid"/>
         <view type="form" name="entrance-form"/>
     </action-view>
-    <!--apartment -->
-    <menuitem name="menu-for-apartment" parent="menu-for-management" title="Apartments" icon="fa fa-home"
-              action="action-apartment"/>
-    <action-view name="action-apartment" title="Apartments"
-                 model="com.axelor.apps.erp.db.Apartment">
-        <view type="grid" name="apartment-grid"/>
-        <view type="form" name="apartment-form"/>
-    </action-view>
-    <!--partner -->
-    <menuitem name="menu-for-resident" parent="menu-for-management" title="Residents" icon="fa fa-user-o"
+
+    <menuitem name="menu-for-resident" parent="menu-for-management" title="Persons" icon="fa fa-user-o"
               action="action-partner-resident"/>
-    <action-view name="action-partner-resident" title="Residents"
+    <action-view name="action-partner-resident" title="Persons"
                  model="com.axelor.apps.base.db.Partner">
         <view type="grid" name="partner-resident-grid"/>
         <view type="form" name="partner-resident-form"/>
     </action-view>
-    <!--Device -->
+
     <menuitem name="menu-for-device" parent="menu-for-management" title="Devices" icon="fa fa-desktop"
               action="action-device"/>
     <action-view name="action-device" title="Devices" model="com.axelor.apps.erp.db.Device">
         <view type="grid" name="device-grid"/>
         <view type="form" name="device-form"/>
     </action-view>
-    <!--Access Rights -->
-    <menuitem name="menu-for-access-rights" parent="menu-for-management" title="Access Rights" icon="fa fa-id-card"
+
+    <menuitem name="menu-for-access-rights" parent="menu-for-management" title="Credentials" icon="fa fa-id-card"
               action="action-access-rights" groups="admins,bosses"/>
-    <action-view name="action-access-rights" title="Access Rights"
+    <action-view name="action-access-rights" title="Credentials"
                  model="com.axelor.apps.erp.db.AccessRights" >
         <view type="grid" name="access-rights-resident-grid"/>
         <view type="form" name="access-rights-resident-form"/>
-    </action-view>
-
-    <!-- Users -->
-    <menuitem name="erp-stat-users-menu-item" title="Users" icon="fa-user" parent="menu-for-bos"
-              icon-background="blue" order="8" action="erp-stat-user-admin-action-view"/>
-    <action-view name="erp-stat-user-admin-action-view" title="Users"
-                 model="com.axelor.auth.db.User">
-        <view type="grid" name="erp-stat-user-grid"/>
-        <view type="form" name="erp-stat-user-form-for-admin"/>
     </action-view>
 
 </object-views>

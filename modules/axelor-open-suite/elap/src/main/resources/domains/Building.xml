@@ -6,17 +6,24 @@
     <module name="erp" package="com.axelor.apps.erp.db"/>
     <entity name="Building">
         <string name="uuid" unique="true" index="true" nullable="false"/>
-        <string name="name" title="Name of the RC" required="true"/>
+        <string name="externalId" unique="true" index="true"/>
+        <string name="name" title="Residential complex" required="true"/>
         <string name="address" title="Address"/>
-        <decimal name="latitude" title="Latitude"  default="42.823581"/>
+        <decimal name="latitude" title="Latitude" default="42.823581"/>
         <decimal name="longitude" title="Longitude" default="74.550867"/>
         <datetime name="timezone" title="Time Zone" tz="true"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
 
-        <one-to-many name="entrance" title="Entrance" ref="com.axelor.apps.erp.db.Entrance"
+        <one-to-many name="entrance" title="Access zones" ref="com.axelor.apps.erp.db.Entrance"
                      mappedBy="building"/>
-        <one-to-many name="device" title="Device" ref="com.axelor.apps.erp.db.Device"
+        <one-to-many name="device" title="Devices" ref="com.axelor.apps.erp.db.Device"
                      mappedBy="building"/>
-       <one-to-many name="geoResult" ref="com.axelor.apps.erp.db.GeoResult" />
+        <one-to-many name="controller" title="Controllers" ref="com.axelor.apps.erp.db.Controller"
+                     mappedBy="building"/>
+        <one-to-many name="deviceGroup" title="Device groups" ref="com.axelor.apps.erp.db.DeviceGroup"
+                     mappedBy="building"/>
+        <one-to-many name="geoResult" ref="com.axelor.apps.erp.db.GeoResult"/>
 
         <finder-method name="findByUUID" using="uuid"/>
 

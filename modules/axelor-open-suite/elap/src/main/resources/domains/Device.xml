@@ -6,17 +6,14 @@
     <module name="erp" package="com.axelor.apps.erp.db"/>
 
     <entity name="Device">
-        <!-- Уникальный ID устройства в системе. -->
         <string name="uuid" unique="true" index="true" nullable="false"/>
+        <string name="externalId" index="true"/>
         <string name="name" title="Name" nullable="false"/>
-        <!-- IPv4/IPv6 адрес устройства в сети. -->
+        <string name="status" selection="device.status.select" default="active"/>
         <string name="ip" title="Ip address" nullable="false"/>
-        <!-- Логин для доступа к устройству. -->
         <string name="login" title="Login" nullable="false"/>
-        <!-- Пароль устройства. -->
         <string name="password" title="Password" nullable="false"/>
-        <string name="deviceType" title="Device Type" selection="devices.type.select"
-                default="lift"/>
+        <string name="deviceType" title="Device Type" selection="devices.type.select" default="lift"/>
         <string name="host" title="Host"/>
         <string name="protocol" title="Protocol"/>
         <integer name="port" title="Port" default="80"/>
@@ -24,8 +21,13 @@
         <string name="firmware" title="FirmWare"/>
         <string name="serialNumber" title="Serial Number"/>
         <boolean name="isActive" title="Is Active" default="true"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
+
         <many-to-one name="entrance" ref="com.axelor.apps.erp.db.Entrance"/>
         <many-to-one name="building" ref="com.axelor.apps.erp.db.Building"/>
+        <many-to-one name="controller" ref="com.axelor.apps.erp.db.Controller"/>
+        <many-to-one name="deviceGroup" ref="com.axelor.apps.erp.db.DeviceGroup"/>
 
         <finder-method name="findByUUID" using="uuid"/>
 

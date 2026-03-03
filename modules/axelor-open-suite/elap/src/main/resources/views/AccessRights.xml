@@ -3,18 +3,33 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
 
-    <grid title="Access Rights" name="access-rights-resident-grid"
-          model="com.axelor.apps.erp.db.AccessRights">
-        <field name="permissionName" title="Permission Name"/>
-        <field name="permissionType" title="Permission Type"/>
+    <grid name="access-rights-resident-grid" title="Credentials" model="com.axelor.apps.erp.db.AccessRights">
+        <field name="permissionName" title="Credential name"/>
+        <field name="permissionType" title="Credential type"/>
+        <field name="credentialStatus"/>
+        <field name="isTemporary"/>
+        <field name="validForm"/>
+        <field name="validUntil"/>
     </grid>
 
-    <form title="Access Rights" name="access-rights-resident-form"
-          model="com.axelor.apps.erp.db.AccessRights">
+    <form name="access-rights-resident-form" title="Credential" model="com.axelor.apps.erp.db.AccessRights">
         <panel>
-            <field name="permissionName" title="Permission Name" required="true"/>
-            <field name="permissionType" title="Permission Type" selection="permission.type.select"
-                   default="custom_access"/>
+            <field name="permissionName" required="true"/>
+            <field name="permissionType"/>
+            <field name="externalId"/>
+            <field name="credentialStatus"/>
+            <field name="isTemporary"/>
+            <field name="validForm"/>
+            <field name="validUntil"/>
+            <field name="dataJson" widget="html"/>
+            <field name="version"/>
+            <field name="updatedAt"/>
+            <button name="saveAccessRights" title="Sync credential" onClick="action-access-rights-save-update"/>
         </panel>
     </form>
+
+    <action-method name="action-access-rights-save-update">
+        <call class="com.axelor.web.AccessRightsController" method="accessRightsSave"/>
+    </action-method>
+
 </object-views>

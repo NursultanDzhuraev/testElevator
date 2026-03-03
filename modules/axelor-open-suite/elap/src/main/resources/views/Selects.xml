@@ -3,20 +3,28 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_6.1.xsd">
 
-  <selection name="partner.type.select">
+  <selection name="person.type.select">
     <option value="resident">Resident</option>
-    <option value="employee">Employee</option>
-    <option value="guest">Guest</option>
-    <option value="courier">Courier</option>
-    <option value="service">Service</option>
-    <option value="security">Security</option>
-    <option value="admin">Admin</option>
+    <option value="staff">Staff</option>
   </selection>
-  <selection name="permission.type.select">
-    <option value="custom_access">Custom Access</option>
-    <option value="full_access">Full Access</option>
-    <option value="empty_access">Empty Access</option>
+
+  <selection name="credential.type.select">
+    <option value="card">Card</option>
+    <option value="pin">PIN</option>
+    <option value="qr">QR</option>
+    <option value="face">Face</option>
+    <option value="full_access">Full Access (legacy)</option>
+    <option value="custom_access">Custom Access (legacy)</option>
+    <option value="empty_access">Empty Access (legacy)</option>
   </selection>
+
+  <selection name="credential.status.select">
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+    <option value="revoked">Revoked</option>
+    <option value="expired">Expired</option>
+  </selection>
+
   <selection name="devices.type.select">
     <option value="lift">lift</option>
     <option value="door">door</option>
@@ -27,10 +35,54 @@
     <option value="parking">parking</option>
   </selection>
 
-  <selection name="patner.status.select">
+  <selection name="partner.status.select">
     <option value="active">active</option>
     <option value="inactive">inactive</option>
     <option value="expired">expired</option>
+  </selection>
+
+  <selection name="device.status.select">
+    <option value="active">active</option>
+    <option value="disabled">disabled</option>
+    <option value="maintenance">maintenance</option>
+  </selection>
+
+  <selection name="controller.status.select">
+    <option value="online">online</option>
+    <option value="offline">offline</option>
+    <option value="error">error</option>
+  </selection>
+
+  <selection name="device.command.type.select">
+    <option value="add_credential">add credential</option>
+    <option value="remove_credential">remove credential</option>
+    <option value="full_sync">full sync</option>
+  </selection>
+
+  <selection name="queue.status.select">
+    <option value="pending">pending</option>
+    <option value="processing">processing</option>
+    <option value="done">done</option>
+    <option value="failed">failed</option>
+    <option value="sent">sent</option>
+    <option value="ack">ack</option>
+  </selection>
+
+  <selection name="sync.operation.select">
+    <option value="create">create</option>
+    <option value="update">update</option>
+    <option value="delete">delete</option>
+  </selection>
+
+  <selection name="access.result.select">
+    <option value="granted">granted</option>
+    <option value="denied">denied</option>
+  </selection>
+
+  <selection name="drift.type.select">
+    <option value="missing_in_local">missing in local</option>
+    <option value="missing_in_axelor">missing in axelor</option>
+    <option value="mismatch">mismatch</option>
   </selection>
 
 </object-views>

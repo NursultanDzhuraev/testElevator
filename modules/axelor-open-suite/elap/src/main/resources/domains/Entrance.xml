@@ -6,8 +6,12 @@
     <module name="erp" package="com.axelor.apps.erp.db"/>
 
     <entity name="Entrance">
-        <!-- номер подъезда -->
-        <string name="entranceNumber" title="Entrance number" required="true"/>
+        <string name="entranceNumber" title="Zone code" required="true"/>
+        <string name="externalId" unique="true" index="true"/>
+        <string name="name" title="Access zone"/>
+        <many-to-one name="parentZone" ref="com.axelor.apps.erp.db.Entrance"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
 
         <many-to-one name="building" ref="com.axelor.apps.erp.db.Building"/>
         <one-to-many name="apartment" ref="com.axelor.apps.erp.db.Apartment"
@@ -15,6 +19,5 @@
         <one-to-many name="device" ref="com.axelor.apps.erp.db.Device" mappedBy="entrance"/>
 
         <unique-constraint columns="building,entranceNumber"/>
-
     </entity>
 </domain-models>

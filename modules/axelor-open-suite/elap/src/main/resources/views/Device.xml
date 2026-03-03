@@ -2,49 +2,42 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
-    <grid title="Device" name="device-grid" model="com.axelor.apps.erp.db.Device">
-        <field name="name" title="Name"/>
-        <field name="ip" title="Ip address"/>
-        <field name="deviceType" title="Device Type"/>
-        <field name="isActive" title="Is Active"/>
-        <field name="entrance" target-name="entranceNumber"/>
-        <field name="entrance.building.name" title="Building Name"/>
-        <field name="partner"/>
+
+    <grid name="device-grid" title="Devices" model="com.axelor.apps.erp.db.Device">
+        <field name="name"/>
+        <field name="externalId"/>
+        <field name="deviceType"/>
+        <field name="status"/>
+        <field name="controller" target-name="name"/>
+        <field name="deviceGroup" target-name="name"/>
+        <field name="entrance" target-name="name"/>
     </grid>
 
-    <grid title="Device" name="device-resident-grid" model="com.axelor.apps.erp.db.Device">
-        <field name="name" title="Name"/>
-        <field name="ip" title="Ip address"/>
-        <field name="deviceType" title="Device Type"/>
-        <field name="entrance.numberEntrance" title="Entrance"/>
-        <field name="isActive" title="Is Active"/>
-    </grid>
-
-    <form title="Device" name="device-form" model="com.axelor.apps.erp.db.Device">
+    <form name="device-form" title="Device" model="com.axelor.apps.erp.db.Device">
         <panel>
-            <field name="name" title="Name" required="true"/>
-            <field name="ip"
-                   title="Ip address"
-                   required="true"
-                   pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"/>
-            <field name="login" title="Login" required="true"/>
-            <field name="password" title="Password" required="true"/>
-            <field name="deviceType" title="Device Type" required="true"/>
+            <field name="name"/>
+            <field name="externalId"/>
+            <field name="uuid" readonly="true"/>
+            <field name="deviceType"/>
+            <field name="status"/>
+            <field name="controller"/>
+            <field name="deviceGroup"/>
+            <field name="building"/>
+            <field name="entrance"/>
+            <field name="ip"/>
+            <field name="login"/>
+            <field name="password"/>
             <field name="host"/>
             <field name="protocol"/>
             <field name="port"/>
-            <field name="model"/>
-            <field name="firmware"/>
-            <field name="serialNumber"/>
-
-            <field name="building" title="Building" required="true"/>
-            <field name="entrance"
-                   target-name="entranceNumber"
-                   domain="self.building = :building"
-                   required="true"
-                   showIf="building"/>
-            <field name="isActive" title="Is Active"/>
+            <field name="version"/>
+            <field name="updatedAt"/>
+            <button name="saveAndUpdateDevice" title="Sync device" onClick="action-device-save-update"/>
         </panel>
     </form>
+
+    <action-method name="action-device-save-update">
+        <call class="com.axelor.web.DeviceController" method="saveAndUpdateDevice"/>
+    </action-method>
 
 </object-views>
