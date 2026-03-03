@@ -3,29 +3,25 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_7.4.xsd">
 
-    <grid name="building-grid" title="Building" model="com.axelor.apps.erp.db.Building">
-        <field name="name" title="Name of the RC"/>
+    <grid name="building-grid" title="Residential complexes" model="com.axelor.apps.erp.db.Building">
+        <field name="name" title="Residential complex"/>
+        <field name="externalId"/>
         <field name="address"/>
-        <field name="entrance" title="Entrances"/>
+        <field name="version"/>
+        <field name="updatedAt"/>
     </grid>
-    <grid name="building-apartment-grid" title="Building" model="com.axelor.apps.erp.db.Building">
-        <field name="name"/>
-    </grid>
-    <form name="building-apartment-form" title="Building" model="com.axelor.apps.erp.db.Building">
-        <panel-related field="entrance" title="Entrances" editable="false"
-                       edit-window="popup">
-            <field name="entranceNumber"/>
-        </panel-related>
-    </form>
 
-    <form name="building-form" title="Building" model="com.axelor.apps.erp.db.Building" onLoad="action-building-statistics">
+    <form name="building-form" title="Residential complex" model="com.axelor.apps.erp.db.Building" onLoad="action-building-statistics">
         <panel colSpan="6">
-            <field name="name" title="Name of the RC"/>
+            <field name="name"/>
+            <field name="externalId"/>
             <field name="address" onChange="action-building-method-address, action-building-attrs"/>
+            <field name="version"/>
+            <field name="updatedAt"/>
             <field name="$showPossible" type="boolean" hidden="true" showTitle="false" colSpan="12"/>
             <field name="latitude" hidden="true"/>
             <field name="longitude" hidden="true"/>
-            <panel-related field="geoResult" title="All address" showIf="$showPossible" editable="false"
+            <panel-related field="geoResult" title="Geocode candidates" showIf="$showPossible" editable="false"
                            canNew="false" canEdit="false" canRemove="false"
                            onChange="action-building-apply-pending-geo" colSpan="12">
                 <field name="displayName" title="Address"/>
@@ -34,31 +30,29 @@
                         onClick="action-building-apply-selected-geo"/>
             </panel-related>
         </panel>
-        <panel-related field="entrance" title="Entrances" editable="true" canNew="true"
+
+        <panel-related field="entrance" title="Access zones" editable="true" canNew="true"
                        canEdit="true" grid-view="entrance-apartment-grid" edit-window="popup">
+            <field name="name"/>
             <field name="entranceNumber"/>
+            <field name="externalId"/>
         </panel-related>
-        <panel-related field="device" title="Device" readonly="true"
+
+        <panel-related field="device" title="Operational devices" readonly="true"
                        showIf="device &amp;&amp; device.length &gt; 0">
-            <field name="name" title="Name"/>
-            <field name="ip" title="Ip address"/>
-            <field name="deviceType" title="Device Type"/>
-            <field name="isActive" title="Is Active"/>
+            <field name="name"/>
+            <field name="externalId"/>
+            <field name="deviceType"/>
+            <field name="status"/>
             <field name="entrance"/>
         </panel-related>
-        <panel name="erp"  hidden="false" colSpan="12">
+
+        <panel name="erp" colSpan="12">
             <panel-dashlet action="action-erp-building.view-map" name="map" colSpan="12"/>
             <panel>
                 <button name="mapBtn" title="View map" icon="fa-map-marker"
                         onClick="action-erp-building-address-method-view-map" colSpan="4"/>
             </panel>
-        </panel>
-        <panel sidebar="true" showIf="id != null">
-            <field name="name" title="Name of the RC"/>
-            <field name="$allApartments" title="All Apartments" type="integer" />
-            <field name="$allResidents" title="All Residents" type="integer"/>
-            <field name="$numberOfDebtors" title="Number of debtors" type="integer" />
-            <field name="$totalAmountOfDebt" title="Total amount of debt" type="integer" />
         </panel>
     </form>
 

@@ -7,14 +7,20 @@
 
     <entity name="AccessRights">
         <string name="uuid" unique="true" index="true" nullable="false"/>
-        <string name="permissionName" title="Permission Name" nullable="false"/>
-        <string name="permissionType" title="Permission Type" selection="permission.type.select"
-                default="custom_access"/>
-        <datetime name="validForm" tz="true" title="Valid Form"/>
-        <datetime name="validUntil" tz="true" title="Valid Until"/>
+        <string name="externalId" index="true"/>
+        <string name="permissionName" title="Credential name" nullable="false"/>
+        <string name="permissionType" title="Credential type" selection="credential.type.select"
+                default="card"/>
+        <boolean name="isTemporary" default="false"/>
+        <string name="credentialStatus" selection="credential.status.select" default="active"/>
+        <string name="dataJson" large="true" title="Data (JSON)"/>
+        <datetime name="validForm" tz="true" title="Valid From"/>
+        <datetime name="validUntil" tz="true" title="Valid To"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
         <one-to-many name="accessCredentials"
                      ref="com.axelor.apps.erp.db.AccessCredential" mappedBy="accessRights"
-                     title="Access Credentials"/>
+                     title="Person access"/>
 
         <finder-method name="findByUUID" using="uuid"/>
         <finder-method name="findByType" using="permissionType"/>

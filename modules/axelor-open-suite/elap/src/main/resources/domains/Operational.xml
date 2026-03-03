@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_7.2.xsd">
+
+    <module name="erp" package="com.axelor.apps.erp.db"/>
+
+    <entity name="DeviceGroup">
+        <string name="externalId" unique="true" index="true"/>
+        <string name="name" required="true"/>
+        <string name="description"/>
+        <many-to-one name="building" ref="com.axelor.apps.erp.db.Building"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
+        <one-to-many name="devices" ref="com.axelor.apps.erp.db.Device" mappedBy="deviceGroup"/>
+    </entity>
+
+    <entity name="Controller">
+        <string name="externalId" unique="true" index="true"/>
+        <string name="name" required="true"/>
+        <many-to-one name="building" ref="com.axelor.apps.erp.db.Building"/>
+        <string name="ipAddress"/>
+        <string name="status" selection="controller.status.select" default="offline"/>
+        <datetime name="lastSeenAt" tz="true"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
+        <one-to-many name="devices" ref="com.axelor.apps.erp.db.Device" mappedBy="controller"/>
+    </entity>
+
+    <entity name="EffectiveAccess">
+        <many-to-one name="partner" ref="com.axelor.apps.base.db.Partner"/>
+        <many-to-one name="device" ref="com.axelor.apps.erp.db.Device"/>
+        <many-to-one name="accessRights" ref="com.axelor.apps.erp.db.AccessRights"/>
+        <datetime name="validFrom" tz="true"/>
+        <datetime name="validTo" tz="true"/>
+    </entity>
+
+    <entity name="DeviceCommand">
+        <many-to-one name="device" ref="com.axelor.apps.erp.db.Device"/>
+        <string name="commandType" selection="device.command.type.select"/>
+        <string name="payload" large="true"/>
+        <string name="status" selection="queue.status.select" default="pending"/>
+        <integer name="retryCount" default="0"/>
+    </entity>
+
+    <entity name="SyncTask">
+        <string name="entityType"/>
+        <string name="entityId"/>
+        <string name="operation" selection="sync.operation.select"/>
+        <string name="status" selection="queue.status.select" default="pending"/>
+        <integer name="retryCount" default="0"/>
+    </entity>
+
+    <entity name="AccessEvent">
+        <datetime name="eventTime" tz="true"/>
+        <many-to-one name="device" ref="com.axelor.apps.erp.db.Device"/>
+        <many-to-one name="partner" ref="com.axelor.apps.base.db.Partner"/>
+        <many-to-one name="accessRights" ref="com.axelor.apps.erp.db.AccessRights"/>
+        <string name="result" selection="access.result.select"/>
+        <string name="reasonCode"/>
+        <string name="rawPayload" large="true"/>
+    </entity>
+
+    <entity name="AuditLog">
+        <string name="entityType"/>
+        <string name="entityId"/>
+        <string name="action" selection="sync.operation.select"/>
+        <many-to-one name="actor" ref="com.axelor.auth.db.User"/>
+        <datetime name="timestamp" tz="true"/>
+        <string name="diff" large="true"/>
+    </entity>
+
+    <entity name="DriftDetection">
+        <string name="entityType"/>
+        <string name="externalId"/>
+        <string name="driftType" selection="drift.type.select"/>
+        <datetime name="detectedAt" tz="true"/>
+    </entity>
+
+    <entity name="ScheduledAccess">
+        <many-to-one name="partner" ref="com.axelor.apps.base.db.Partner"/>
+        <many-to-one name="device" ref="com.axelor.apps.erp.db.Device"/>
+        <many-to-one name="entrance" ref="com.axelor.apps.erp.db.Entrance"/>
+        <datetime name="startTime" tz="true"/>
+        <datetime name="endTime" tz="true"/>
+        <string name="recurrenceRule"/>
+        <string name="externalId" index="true"/>
+        <integer name="version" default="1"/>
+        <datetime name="updatedAt" tz="true"/>
+    </entity>
+
+</domain-models>

@@ -64,6 +64,14 @@ public class PartnerServiceImpl implements PartnerService {
         if (partner.getUuid() == null) {
             partner.setUuid(UUID.randomUUID().toString().replace("-", ""));
         }
+        if (partner.getExternalId() == null || partner.getExternalId().isBlank()) {
+            partner.setExternalId(partner.getUuid());
+        }
+        if ((partner.getFirstName() == null || partner.getFirstName().isBlank()) && partner.getName() != null) {
+            partner.setFirstName(partner.getName());
+        }
+        partner.setUpdatedAt(LocalDateTime.now());
+        partner.setVersion(partner.getVersion() == null ? 1 : partner.getVersion() + 1);
         boolean isNew = partner.getId() == null;
         if (isNew) {
             Set<Apartment> apartments = partner.getApartment();
